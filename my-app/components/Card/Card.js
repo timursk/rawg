@@ -8,11 +8,16 @@ export const Card = ({name, background_image, rating, released}) => {
       <div>
         <h3>{name}</h3>
         <p>{rating}</p>
-        <p>{released}</p>
+        <P>{released}</P>
       </div>
     </Container>
   )
 }
+
+const P = styled.p`
+  color: ${({theme}) => theme.colors.primary};
+`;
+
 const Container = styled.div`
   // width: 200px;
   display: flex;
@@ -25,6 +30,5 @@ const Container = styled.div`
 
 const Image = styled.img`
   width: 200px;
-  color: black;
 `;
 
