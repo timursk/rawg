@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Card } from '../components/Card/Card';
 import { Header } from '../components/Header/Header';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import styles from '../styles/Home.module.css';
+import { throttle } from '../Utils/throttle';
 
 export default function Home({ initialGames }) {
   const [games, setGames] = useState([]);
@@ -15,17 +16,19 @@ export default function Home({ initialGames }) {
     setGames(gamesByColumn);
   }, [gamesByColumn]);
 
-  const handleSearch = (value) => {
+  const handleSearch = useCallback((value) => {
     const newGames = gamesByColumn.map((gamesArr) => {
       return gamesArr.filter((game) => game.name.toLowerCase().includes(value.toLowerCase()));
     });
 
     setGames(newGames);
-  };
+  }, []);
+
+  const throttledHandleSearch = useCallback(throttle(handleSearch, 200), [handleSearch]);
 
   return (
     <>
-      <Header handleSearch={handleSearch} />
+      <Header handleSearch={throttledHandleSearch} />
 
       <Container className={styles.container}>
         {games?.length &&
