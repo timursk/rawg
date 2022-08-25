@@ -9,7 +9,19 @@
     "lint:next": "next lint",
     "format": "prettier --write **/*.js{,x}",
     "lint": "eslint **/*.js{,x}",
-    "lint:fix": "eslint **/*.js{,x} --fix"
+    "lint:fix": "eslint **/*.js{,x} --fix",
+    "prepare": "cd ../ && husky install ./my-app/.husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run lint:fix",
+      "npm run format"
+    ]
   },
   "dependencies": {
     "next": "12.2.5",
@@ -23,6 +35,8 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
   }
 }
