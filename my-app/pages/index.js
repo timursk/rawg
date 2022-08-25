@@ -42,13 +42,16 @@ export default function Home({ initialGames }) {
     });
   }, [router.query.page]);
 
-  const handleSearch = useCallback((value) => {
-    const newGames = gamesByColumn.map((gamesArr) => {
-      return gamesArr.filter((game) => game.name.toLowerCase().includes(value.toLowerCase()));
-    });
+  const handleSearch = useCallback(
+    (value) => {
+      const newGames = gamesByColumn.map((gamesArr) => {
+        return gamesArr.filter((game) => game.name.toLowerCase().includes(value.toLowerCase()));
+      });
 
-    setGames(newGames);
-  }, []);
+      setGames(newGames);
+    },
+    [gamesByColumn]
+  );
 
   const throttledHandleSearch = useCallback(throttle(handleSearch, 200), [handleSearch]);
 
