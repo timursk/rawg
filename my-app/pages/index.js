@@ -1,16 +1,24 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import styled from 'styled-components';
 import { Card } from '../components/Card/Card'
+import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import styles from '../styles/Home.module.css'
 
 export default function Home({games}) {
-  console.log(games.results[0]);
+  const gamesByColumn = useGetGamesByColumns(games.results);
+  console.log(gamesByColumn);
+
   return (
-    <div className={styles.container}>
-      {games.results.map(({id, name, background_image, rating, released}) => {
-        return <Card key={id} name={name} background_image={background_image} rating={rating} released={released} />
+    <Container className={styles.container}>
+      {gamesByColumn.map((gamesColumn) => {
+        return (
+          <Column>
+            {gamesColumn.map((game) => <Card key={game.id} game={game} />)}
+          </Column>
+          )
       })}
-    </div>
+    </Container>
   )
 }
 
@@ -22,3 +30,27 @@ export async function getServerSideProps(context) {
     props: {games}, // will be passed to the page component as props
   }
 }
+
+const Container = styled.div`
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+
+  @media(min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media(min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const Column = styled.div`
+  & div {
+    margin-bottom: 10px;
+  }
+  & div:last-child {
+    margin-bottom: 0;
+  }
+`;
