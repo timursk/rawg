@@ -1,13 +1,26 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import searchIcon from '../../assets/search-icon.svg';
 
-export function Header() {
+export function Header({ handleSearch }) {
+  const [value, setValue] = useState('');
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    handleSearch(e.target.value);
+  };
+
   return (
     <StyledHeader>
       <Title>RAWG</Title>
 
       <StyledLabel>
-        <StyledInput type="text" placeholder="search"></StyledInput>
+        <StyledInput
+          onChange={handleChange}
+          value={value}
+          type="text"
+          placeholder="search"
+        ></StyledInput>
       </StyledLabel>
     </StyledHeader>
   );
@@ -20,6 +33,7 @@ const StyledHeader = styled.header`
   min-height: 64px;
   padding: 10px;
   background: purple;
+  gap: 40px;
 `;
 
 const Title = styled.div`
@@ -49,5 +63,6 @@ const StyledInput = styled.input`
   padding-left: 40px;
   border: none;
   border-radius: 5px;
+  // background: grey;
   font-size: 1.3rem;
 `;
