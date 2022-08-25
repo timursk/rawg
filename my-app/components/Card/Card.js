@@ -1,23 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
+import { MainInfo } from './MainInfo';
 
-export const Card = ({game: {name, background_image, rating, released}}) => {
+export const Card = ({game: {name, background_image, rating, released, metacritic}}) => {
   return (
     <Container>
       <Image src={background_image} alt={name} />
 
       <StyledDiv>
-        <h3>{name}</h3>
-        <P>Release date: <b>{released}</b></P>
-        <p>Rating: <b>{rating}</b></p>
+        <MainInfo name={name} rating={rating} metacritic={metacritic} />
+        <p>Release date: <b>{released}</b></p>
       </StyledDiv>
     </Container>
   )
 }
-
-const P = styled.p`
-  color: ${({theme}) => theme.colors.primary};
-`;
 
 const Container = styled.div`
   max-width: 400px;
@@ -25,10 +21,15 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid grey;
+  border: 1px solid rgba(149, 157, 165, 0.2);
   border-radius: 1rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   overflow: hidden;
+  // background-color: #202020;
+`;
+
+const P = styled.p`
+  color: ${({theme}) => theme.colors.primary};
 `;
 
 const Image = styled.img`
@@ -40,4 +41,3 @@ const StyledDiv = styled.div`
   width: 100%;
   padding: 0 5px;
 `;
-

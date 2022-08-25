@@ -47,10 +47,10 @@ const Container = styled.div`
 `;
 
 const Column = styled.div`
-  & div {
+  & > div {
     margin-bottom: 10px;
   }
-  & div:last-child {
+  & > div:last-child {
     margin-bottom: 0;
   }
 `;
