@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Card } from '../components/Card/Card';
+import { Header } from '../components/Header/Header';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import styles from '../styles/Home.module.css';
 
@@ -10,17 +11,21 @@ export default function Home({ games }) {
   console.log(gamesByColumn);
 
   return (
-    <Container className={styles.container}>
-      {gamesByColumn.map((gamesColumn, idx) => {
-        return (
-          <Column key={idx}>
-            {gamesColumn.map((game) => (
-              <Card key={game.id} game={game} />
-            ))}
-          </Column>
-        );
-      })}
-    </Container>
+    <>
+      <Header />
+
+      <Container className={styles.container}>
+        {gamesByColumn.map((gamesColumn, idx) => {
+          return (
+            <Column key={idx}>
+              {gamesColumn.map((game) => (
+                <Card key={game.id} game={game} />
+              ))}
+            </Column>
+          );
+        })}
+      </Container>
+    </>
   );
 }
 
