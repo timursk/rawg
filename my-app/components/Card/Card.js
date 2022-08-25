@@ -1,17 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import { MainInfo } from './MainInfo';
+import Link from 'next/link';
 
-export const Card = ({game: {name, background_image, rating, released, metacritic}}) => {
+export const Card = ({game: {name, background_image, rating, released, metacritic, id}}) => {
+  const handleClick = () => {
+  }
+  
   return (
-    <Container>
-      <Image src={background_image} alt={name} />
+    <Link href={`/games/${id}`}>
+      <Container onClick={handleClick}>
+          <Image src={background_image} alt={name} />
 
-      <StyledDiv>
-        <MainInfo name={name} rating={rating} metacritic={metacritic} />
-        <p>Release date: <b>{released}</b></p>
-      </StyledDiv>
-    </Container>
+        <StyledDiv>
+          <MainInfo name={name} rating={rating} metacritic={metacritic} />
+          <p>Release date: <b>{released}</b></p>
+        </StyledDiv>
+      </Container>
+    </Link>
   )
 }
 
