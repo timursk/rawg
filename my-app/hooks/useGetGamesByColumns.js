@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { getColumnsCount } from "../Utils/getColumnsCount";
+import { useEffect, useState } from 'react';
+import { getColumnsCount } from '../Utils/getColumnsCount';
 
-export function useGetGamesByColumns (initialGames) {
+export function useGetGamesByColumns(initialGames) {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
@@ -15,8 +15,7 @@ export function useGetGamesByColumns (initialGames) {
           const start = i * gamesColumnCount;
           newGames.push(initialGames.slice(start, start + gamesColumnCount));
         }
-      } 
-      else {
+      } else {
         let gamesColumnCount = initialGames.length / columnsCount;
         let newGamesLen = 0;
 
@@ -30,13 +29,13 @@ export function useGetGamesByColumns (initialGames) {
 
             newGames.push(initialGames.slice(start, start + len));
 
-            gamesColumnCount = (initialGames.length - len * (i + 1)) / (columnsCount - (i + 1))
+            gamesColumnCount = (initialGames.length - len * (i + 1)) / (columnsCount - (i + 1));
             newGamesLen += len;
           }
         }
       }
 
-      setGames(newGames);      
+      setGames(newGames);
     }
 
     window.addEventListener('resize', handleResize);
