@@ -4,17 +4,43 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Card } from '../components/Card/Card';
 import { Header } from '../components/Header/Header';
+import { Pagination } from '../components/Pagination/Pagination';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
-import styles from '../styles/Home.module.css';
 import { throttle } from '../Utils/throttle';
+import { useRouter } from 'next/router';
 
 export default function Home({ initialGames }) {
+  console.log(initialGames);
   const [games, setGames] = useState([]);
-  const gamesByColumn = useGetGamesByColumns(initialGames.results);
+  const [pagination, setPagination] = useState({
+    previous: initialGames.previous,
+    next: initialGames.next,
+  });
+
+  const router = useRouter();
+  const { games: gamesByColumn, refetch } = useGetGamesByColumns(initialGames.results);
 
   useEffect(() => {
     setGames(gamesByColumn);
   }, [gamesByColumn]);
+
+  useEffect(() => {
+    if (!router.query.page) {
+      return;
+    }
+
+    async function getGames() {
+      const response = await fetch(
+        `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412&page=${router.query.page}`
+      );
+      return await response.json();
+    }
+
+    getGames().then((result) => {
+      setPagination({ previous: result.previous, next: result.next });
+      refetch(result.results);
+    });
+  }, [router.query.page]);
 
   const handleSearch = useCallback((value) => {
     const newGames = gamesByColumn.map((gamesArr) => {
@@ -30,7 +56,7 @@ export default function Home({ initialGames }) {
     <>
       <Header handleSearch={throttledHandleSearch} />
 
-      <Container className={styles.container}>
+      <Container>
         {games?.length &&
           games.map((gamesColumn, idx) => {
             if (!gamesColumn?.length) {
@@ -46,6 +72,8 @@ export default function Home({ initialGames }) {
             );
           })}
       </Container>
+
+      <Pagination next={pagination.next} previous={pagination.previous} />
     </>
   );
 }

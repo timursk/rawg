@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getColumnsCount } from '../Utils/getColumnsCount';
 
-export function useGetGamesByColumns(initialGames) {
+export function useGetGamesByColumns(initial) {
+  const [initialGames, setInitialGames] = useState(initial);
   const [games, setGames] = useState([]);
 
   useEffect(() => {
@@ -42,7 +43,11 @@ export function useGetGamesByColumns(initialGames) {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [initialGames]);
 
-  return games;
+  function refetch(initial) {
+    setInitialGames(initial);
+  }
+
+  return { games, refetch };
 }
