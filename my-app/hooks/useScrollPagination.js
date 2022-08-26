@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 let isFetching = false;
 
 export function useScrollPagination({ initialGames, next }) {
+  console.log('INIT', initialGames, next);
   const [initial, setInitial] = useState(initialGames);
   const [nextLink, setNextLink] = useState(next);
   const [games, setGames] = useState(initialGames.results);
+
+  console.log('scroll', initialGames, next);
 
   useEffect(() => {
     setInitial(initialGames);
@@ -23,6 +26,10 @@ export function useScrollPagination({ initialGames, next }) {
   }, [handleScroll]);
 
   function handleScroll(e) {
+    if (!nextLink) {
+      return;
+    }
+
     const scrollHeightBottom =
       e.target.documentElement.scrollHeight -
       (e.target.documentElement.scrollTop + window.innerHeight);

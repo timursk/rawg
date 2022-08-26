@@ -4,7 +4,7 @@ import { getColumnsCount } from '../Utils/getColumnsCount';
 export function useGetGamesByColumns(initial) {
   const [initialGames, setInitialGames] = useState(initial);
   const [gamesByColumn, setGamesByColumns] = useState([]);
-
+  console.log('REHOOK');
   useEffect(() => {
     setInitialGames(initial);
   }, [initial]);

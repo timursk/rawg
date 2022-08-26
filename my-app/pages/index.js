@@ -6,60 +6,63 @@ import { Card } from '../components/Card/Card';
 import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
-import { throttle } from '../Utils/throttle';
+import { debounce } from '../Utils/debounce';
 import { useScrollPagination } from '../hooks/useScrollPagination';
 import { Sort } from '../components/Sort/Sort';
 
 export default function Home({ initial }) {
-  const [initialGames, setInitialGames] = useState(initial);
-  const [results, setResults] = useState(initial.results);
-  console.log('res', results);
-  const [games, setGames] = useState(null);
-
-  const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(results);
+  const [games, setGames] = useState(initial);
+  // const [results, setResults] = useState(initial.results);
+  // console.log('res', results);
+  // const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(results);
+  const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(games.results);
+  console.log('games', games);
   const { scrolledGames, scrolledInitialGames } = useScrollPagination({
-    initialGames,
-    next: initialGames.next,
+    initialGames: games,
+    next: games.next,
   });
 
   useEffect(() => {
-    setInitialGames(initial);
-    setResults(initial.results);
+    setGames(initial);
+    // setResults(initial.results);
   }, [initial]);
 
   useEffect(() => {
-    setInitialGames(scrolledInitialGames);
-    addNewGames(scrolledGames);
+    const newTest = { ...scrolledInitialGames, results: scrolledGames };
+    setGames(newTest);
+    // setGames(scrolledInitialGames);
+    // addNewGames(scrolledGames);
   }, [scrolledGames]);
-
-  useEffect(() => {
-    setGames(gamesByColumn);
-  }, [gamesByColumn]);
 
   const handleSearch = useCallback(
     (value) => {
-      const newGames = gamesByColumn.map((gamesArr) => {
-        return gamesArr.filter((game) => game.name.toLowerCase().includes(value.toLowerCase()));
-      });
+      async function getGames(search) {
+        const response = await fetch(
+          `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412&search=${search}`
+        );
+        return await response.json();
+      }
 
-      setGames(newGames);
+      getGames(value).then((result) => {
+        setGames(result);
+      });
     },
     [gamesByColumn]
   );
 
-  const throttledHandleSearch = useCallback(throttle(handleSearch, 200), [handleSearch]);
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 650), [handleSearch]);
 
   return (
     <>
-      <Header handleSearch={throttledHandleSearch} />
+      <Header handleSearch={debouncedHandleSearch} />
 
-      <div>
+      {/* <div>
         <Sort games={allGames} setGames={setAllGames} />
-      </div>
+      </div> */}
 
-      {games?.length && (
+      {/* {gamesByColumn?.length && (
         <Container>
-          {games.map((gamesColumn, idx) => {
+          {gamesByColumn.map((gamesColumn, idx) => {
             if (!gamesColumn?.length) {
               return;
             }
@@ -73,9 +76,9 @@ export default function Home({ initial }) {
             );
           })}
         </Container>
-      )}
+      )} */}
 
-      <Pagination next={initialGames.next} previous={initialGames.previous} />
+      <Pagination next={games.next} previous={games.previous} />
     </>
   );
 }
