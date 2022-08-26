@@ -1,34 +1,89 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from 'next/head';
+import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Card } from '../components/Card/Card'
+import { Card } from '../components/Card/Card';
+import { Header } from '../components/Header/Header';
+import { Pagination } from '../components/Pagination/Pagination';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
-import styles from '../styles/Home.module.css'
+import { throttle } from '../Utils/throttle';
+import { useScrollPagination } from '../hooks/useScrollPagination';
 
-export default function Home({games}) {
-  const gamesByColumn = useGetGamesByColumns(games.results);
-  console.log(gamesByColumn);
+export default function Home({ initial }) {
+  const [initialGames, setInitialGames] = useState(initial);
+  const [results, setResults] = useState(initial.results);
+
+  const [games, setGames] = useState(null);
+
+  const { gamesByColumn, addNewGames } = useGetGamesByColumns(results);
+  const { scrolledGames, scrolledInitialGames } = useScrollPagination({
+    initialGames,
+    next: initialGames.next,
+  });
+
+  useEffect(() => {
+    setInitialGames(initial);
+    setResults(initial.results);
+  }, [initial]);
+
+  useEffect(() => {
+    setInitialGames(scrolledInitialGames);
+    addNewGames(scrolledGames);
+  }, [scrolledGames]);
+
+  useEffect(() => {
+    setGames(gamesByColumn);
+  }, [gamesByColumn]);
+
+  const handleSearch = useCallback(
+    (value) => {
+      const newGames = gamesByColumn.map((gamesArr) => {
+        return gamesArr.filter((game) => game.name.toLowerCase().includes(value.toLowerCase()));
+      });
+
+      setGames(newGames);
+    },
+    [gamesByColumn]
+  );
+
+  const throttledHandleSearch = useCallback(throttle(handleSearch, 200), [handleSearch]);
 
   return (
-    <Container className={styles.container}>
-      {gamesByColumn.map((gamesColumn) => {
-        return (
-          <Column>
-            {gamesColumn.map((game) => <Card key={game.id} game={game} />)}
-          </Column>
-          )
-      })}
-    </Container>
-  )
+    <>
+      <Header handleSearch={throttledHandleSearch} />
+
+      {games?.length && (
+        <Container>
+          {games.map((gamesColumn, idx) => {
+            if (!gamesColumn?.length) {
+              return;
+            }
+
+            return (
+              <Column key={idx}>
+                {gamesColumn.map((game) => (
+                  <Card key={game.id} game={game} />
+                ))}
+              </Column>
+            );
+          })}
+        </Container>
+      )}
+
+      <Pagination next={initialGames.next} previous={initialGames.previous} />
+    </>
+  );
 }
 
-export async function getServerSideProps(context) {
-  const response = await fetch('https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412');
-  const games = await response.json();
-  
+export async function getServerSideProps({ query: { page = 1 } }) {
+  const response = await fetch(
+    `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412&page=${page}`
+  );
+  const initial = await response.json();
+
   return {
-    props: {games}, // will be passed to the page component as props
-  }
+    props: { initial },
+  };
 }
 
 const Container = styled.div`
@@ -37,11 +92,11 @@ const Container = styled.div`
   gap: 10px;
   padding: 10px;
 
-  @media(min-width: 600px) {
+  @media (min-width: 600px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media(min-width: 900px) {
+  @media (min-width: 900px) {
     grid-template-columns: repeat(3, 1fr);
   }
 `;

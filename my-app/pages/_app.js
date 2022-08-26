@@ -1,5 +1,5 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import '../styles/globals.css'
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import '../styles/globals.css';
 
 const GlobalStyle = createGlobalStyle`
   html,  
@@ -19,8 +19,8 @@ const theme = {
   colors: {
     primary: '#0070f3',
     textColor: '#000',
-  }
-}
+  },
+};
 
 export default function App({ Component, pageProps }) {
   return (
@@ -30,5 +30,5 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </ThemeProvider>
     </>
-  )
+  );
 }

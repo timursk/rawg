@@ -1,49 +1,61 @@
-import { useEffect, useState } from "react";
-import { getColumnsCount } from "../Utils/getColumnsCount";
+import { useEffect, useState } from 'react';
+import { getColumnsCount } from '../Utils/getColumnsCount';
 
-export function useGetGamesByColumns (initialGames) {
-  const [games, setGames] = useState([]);
+export function useGetGamesByColumns(initial) {
+  const [initialGames, setInitialGames] = useState(initial);
+  const [gamesByColumn, setGamesByColumns] = useState([]);
+
+  useEffect(() => {
+    setInitialGames(initial);
+  }, [initial]);
 
   useEffect(() => {
     function handleResize() {
-      const columnsCount = getColumnsCount(window.innerWidth);
-      const gamesColumnCount = initialGames.length / columnsCount;
       const newGames = [];
+      const columnsCount = getColumnsCount(window.innerWidth);
 
-      if (Number.isInteger(gamesColumnCount)) {
-        for (let i = 0; i < columnsCount; i++) {
-          const start = i * gamesColumnCount;
-          newGames.push(initialGames.slice(start, start + gamesColumnCount));
-        }
-      } 
-      else {
-        let gamesColumnCount = initialGames.length / columnsCount;
-        let newGamesLen = 0;
-
-        for (let i = 0; i < columnsCount; i++) {
-          if (Number.isInteger(gamesColumnCount)) {
-            const start = newGamesLen + (i - columnsCount + 1) * gamesColumnCount;
-            newGames.push(initialGames.slice(start, start + gamesColumnCount));
-          } else {
-            const len = Math.ceil(gamesColumnCount);
-            const start = i * len;
-
-            newGames.push(initialGames.slice(start, start + len));
-
-            gamesColumnCount = (initialGames.length - len * (i + 1)) / (columnsCount - (i + 1))
-            newGamesLen += len;
-          }
-        }
+      for (let i = 0; i < columnsCount; i++) {
+        newGames.push([]);
       }
 
-      setGames(newGames);      
+      let columnIdx = 0;
+      for (let i = 0; i < initialGames.length; i++) {
+        newGames[columnIdx].push(initialGames[i]);
+        columnIdx = columnIdx === newGames.length - 1 ? 0 : columnIdx + 1;
+      }
+
+      setGamesByColumns(newGames);
     }
 
     window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [initial]);
 
-  return games;
+  function addNewGames(initial) {
+    if (initialGames === initial) {
+      return;
+    }
+
+    setInitialGames(initial);
+
+    const newGames = [];
+    let columnIdx = 0;
+
+    const columnsCount = getColumnsCount(window.innerWidth);
+    for (let i = 0; i < columnsCount; i++) {
+      newGames.push([]);
+    }
+
+    for (let i = 0; i < initial.length; i++) {
+      newGames[columnIdx].push(initial[i]);
+      columnIdx = columnIdx === newGames.length - 1 ? 0 : columnIdx + 1;
+    }
+
+    const newGamesByColumn = newGames;
+    setGamesByColumns(newGamesByColumn);
+  }
+
+  return { gamesByColumn, addNewGames };
 }

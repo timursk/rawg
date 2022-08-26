@@ -5,7 +5,7 @@ export function getColumnsCount(width) {
     case width < 600: {
       count = 1;
       break;
-    } 
+    }
     case width < 900: {
       count = 2;
       break;

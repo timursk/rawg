@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export function MainInfo({name, rating, metacritic}) {
+export function MainInfo({ name, rating, metacritic }) {
   return (
     <TitleContainer>
       <h3>{name}</h3>
@@ -15,7 +15,7 @@ export function MainInfo({name, rating, metacritic}) {
         </RaitingCard>
       </RaitingContainer>
     </TitleContainer>
-  )
+  );
 }
 
 const TitleContainer = styled.div`
