@@ -11,11 +11,7 @@ import { throttle } from '../Utils/throttle';
 export default function Home({ initial }) {
   const [games, setGames] = useState(null);
 
-  const { games: gamesByColumn, recalculate } = useGetGamesByColumns(initial.results);
-
-  useEffect(() => {
-    recalculate(initial.results);
-  }, [initial]);
+  const { gamesByColumn } = useGetGamesByColumns(initial.results);
 
   useEffect(() => {
     setGames(gamesByColumn);

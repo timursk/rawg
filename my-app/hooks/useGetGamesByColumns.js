@@ -3,7 +3,11 @@ import { getColumnsCount } from '../Utils/getColumnsCount';
 
 export function useGetGamesByColumns(initial) {
   const [initialGames, setInitialGames] = useState(initial);
-  const [games, setGames] = useState([]);
+  const [gamesByColumn, setGamesByColumns] = useState([]);
+
+  useEffect(() => {
+    setInitialGames(initial);
+  }, [initial]);
 
   useEffect(() => {
     function handleResize() {
@@ -36,18 +40,14 @@ export function useGetGamesByColumns(initial) {
         }
       }
 
-      setGames(newGames);
+      setGamesByColumns(newGames);
     }
 
     window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [initial, initialGames]);
+  }, [initialGames]);
 
-  function recalculate(initial) {
-    setInitialGames(initial);
-  }
-
-  return { games, recalculate };
+  return { gamesByColumn };
 }
