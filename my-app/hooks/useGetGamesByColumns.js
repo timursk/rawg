@@ -43,11 +43,11 @@ export function useGetGamesByColumns(initial) {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [initialGames]);
+  }, [initial, initialGames]);
 
-  function refetch(initial) {
+  function recalculate(initial) {
     setInitialGames(initial);
   }
 
-  return { games, refetch };
+  return { games, recalculate };
 }

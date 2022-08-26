@@ -19,14 +19,8 @@ export function Pagination({ next, previous }) {
 
   useEffect(() => {
     const newPages = [];
-
-    let start = currentPage - 2;
-    let end = currentPage + 3;
-
-    while (start <= 0) {
-      start += 1;
-      end += 1;
-    }
+    let start = Math.max(1, currentPage - 2);
+    let end = start + 4;
 
     for (let i = start; i <= end; i++) {
       newPages.push(i);
