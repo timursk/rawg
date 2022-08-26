@@ -8,14 +8,15 @@ import { Pagination } from '../components/Pagination/Pagination';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import { throttle } from '../Utils/throttle';
 import { useScrollPagination } from '../hooks/useScrollPagination';
+import { Sort } from '../components/Sort/Sort';
 
 export default function Home({ initial }) {
   const [initialGames, setInitialGames] = useState(initial);
   const [results, setResults] = useState(initial.results);
-
+  console.log('res', results);
   const [games, setGames] = useState(null);
 
-  const { gamesByColumn, addNewGames } = useGetGamesByColumns(results);
+  const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(results);
   const { scrolledGames, scrolledInitialGames } = useScrollPagination({
     initialGames,
     next: initialGames.next,
@@ -51,6 +52,10 @@ export default function Home({ initial }) {
   return (
     <>
       <Header handleSearch={throttledHandleSearch} />
+
+      <div>
+        <Sort games={allGames} setGames={setAllGames} />
+      </div>
 
       {games?.length && (
         <Container>

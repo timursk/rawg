@@ -31,7 +31,7 @@ export function useGetGamesByColumns(initial) {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [initial]);
+  }, [initialGames]);
 
   function addNewGames(initial) {
     if (initialGames === initial) {
@@ -39,23 +39,7 @@ export function useGetGamesByColumns(initial) {
     }
 
     setInitialGames(initial);
-
-    const newGames = [];
-    let columnIdx = 0;
-
-    const columnsCount = getColumnsCount(window.innerWidth);
-    for (let i = 0; i < columnsCount; i++) {
-      newGames.push([]);
-    }
-
-    for (let i = 0; i < initial.length; i++) {
-      newGames[columnIdx].push(initial[i]);
-      columnIdx = columnIdx === newGames.length - 1 ? 0 : columnIdx + 1;
-    }
-
-    const newGamesByColumn = newGames;
-    setGamesByColumns(newGamesByColumn);
   }
 
-  return { gamesByColumn, addNewGames };
+  return { gamesByColumn, allGames: initialGames, setAllGames: setInitialGames, addNewGames };
 }
