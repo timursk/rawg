@@ -7,11 +7,29 @@ import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
 import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import { throttle } from '../Utils/throttle';
+import { useScrollPagination } from '../hooks/useScrollPagination';
 
 export default function Home({ initial }) {
+  const [initialGames, setInitialGames] = useState(initial);
+  const [results, setResults] = useState(initial.results);
+
   const [games, setGames] = useState(null);
 
-  const { gamesByColumn } = useGetGamesByColumns(initial.results);
+  const { gamesByColumn, addNewGames } = useGetGamesByColumns(results);
+  const { scrolledGames, scrolledInitialGames } = useScrollPagination({
+    initialGames,
+    next: initialGames.next,
+  });
+
+  useEffect(() => {
+    setInitialGames(initial);
+    setResults(initial.results);
+  }, [initial]);
+
+  useEffect(() => {
+    setInitialGames(scrolledInitialGames);
+    addNewGames(scrolledGames);
+  }, [scrolledGames]);
 
   useEffect(() => {
     setGames(gamesByColumn);
@@ -34,9 +52,9 @@ export default function Home({ initial }) {
     <>
       <Header handleSearch={throttledHandleSearch} />
 
-      <Container>
-        {games?.length &&
-          games.map((gamesColumn, idx) => {
+      {games?.length && (
+        <Container>
+          {games.map((gamesColumn, idx) => {
             if (!gamesColumn?.length) {
               return;
             }
@@ -49,9 +67,10 @@ export default function Home({ initial }) {
               </Column>
             );
           })}
-      </Container>
+        </Container>
+      )}
 
-      <Pagination next={initial.next} previous={initial.previous} />
+      <Pagination next={initialGames.next} previous={initialGames.previous} />
     </>
   );
 }
