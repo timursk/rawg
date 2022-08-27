@@ -1,24 +1,39 @@
 import { useState } from 'react';
+import { DropDown } from '../DropDown/DropDown';
+import { useRef } from 'react';
 
-export function Sort({ filters, setFilters }) {
-  const [value, setValue] = useState('');
+const sort = [
+  { title: 'Relevance', dataValue: '' },
+  { title: 'Rating (High)', dataValue: '-rating' },
+  { title: 'Rating (Low)', dataValue: 'rating' },
+  { title: 'Release (New)', dataValue: '-released' },
+  { title: 'Release (Old)', dataValue: 'released' },
+];
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    if (filters.sort !== e.target.value) {
-      setFilters((prev) => ({ ...prev, ordering: e.target.value }));
+export function Sort({ setFilters }) {
+  const [value, setValue] = useState('Relevance');
+  const [isOpen, setIsOpen] = useState(false);
+  const dropDownRef = useRef(null);
+
+  const handleClick = (e) => {
+    const targetValue = e.target.dataset.value;
+    if (!e.target.textContent) {
+      return;
     }
+
+    setValue(e.target.textContent);
+    setFilters((prev) => ({ ...prev, ordering: targetValue }));
+    setIsOpen(false);
   };
 
   return (
-    <div>
-      <select value={value} onChange={handleChange}>
-        <option value="">Relevance</option>
-        <option value="-rating">Rating (High)</option>
-        <option value="rating">Rating (Low)</option>
-        <option value="-released">Release (New)</option>
-        <option value="released">Release (Old)</option>
-      </select>
-    </div>
+    <DropDown
+      isOpen={isOpen}
+      dropDownRef={dropDownRef}
+      value={value}
+      list={sort}
+      setIsOpen={setIsOpen}
+      handleClick={handleClick}
+    />
   );
 }

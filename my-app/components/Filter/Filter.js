@@ -1,27 +1,38 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useRef, useState } from 'react';
+import { DropDown } from '../DropDown/DropDown';
+
+const platforms = [
+  { title: 'PC', dataValue: '4' },
+  { title: 'PlayStation', dataValue: '18,167,16' },
+  { title: 'XBox', dataValue: '1,186,14' },
+  { title: 'Nintendo', dataValue: '7,8,9' },
+  { title: 'MacOS', dataValue: '5' },
+];
 
 export function Filter({ filters, setFilters }) {
-  const [value, setValue] = useState('4');
+  const [value, setValue] = useState('PC');
+  const [isOpen, setIsOpen] = useState(false);
+  const dropDownRef = useRef(null);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    if (filters.sort !== e.target.value) {
-      setFilters((prev) => ({ ...prev, platforms: e.target.value }));
+  const handleClick = (e) => {
+    const targetValue = e.target.dataset.value;
+    if (!e.target.textContent) {
+      return;
     }
+
+    setValue(e.target.textContent);
+    setFilters((prev) => ({ ...prev, platforms: targetValue }));
+    setIsOpen(false);
   };
 
   return (
-    <div>
-      <select value={value} onChange={handleChange}>
-        <option value="4">PC</option>
-        <option value="18,187,16">PlayStation</option>
-        <option value="1,186,14">XBox</option>
-        <option value="7,8,9">Nintendo</option>
-        <option value="5">MacOS</option>
-      </select>
-    </div>
+    <DropDown
+      isOpen={isOpen}
+      dropDownRef={dropDownRef}
+      value={value}
+      list={platforms}
+      setIsOpen={setIsOpen}
+      handleClick={handleClick}
+    />
   );
 }
-
-// const StyledSelect = styled.select

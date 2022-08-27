@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
 import { debounce } from '../Utils/debounce';
-import { Sort } from '../components/Sort/Sort';
 import { Games } from '../components/Games/Games';
-import { Filter } from '../components/Filter/Filter';
+import { Controls } from '../components/Controls/Controls';
 
 export default function Home({ initial }) {
   const [games, setGames] = useState(initial);
@@ -54,8 +53,7 @@ export default function Home({ initial }) {
     <>
       <Header setFilters={debounce(setFilters, 650)} />
 
-      <Sort filters={filters} setFilters={setFilters} />
-      <Filter filters={filters} setFilters={setFilters} />
+      <Controls setFilters={setFilters} />
 
       <Games games={games} isLoading={isLoading} setGames={setGames} />
 
