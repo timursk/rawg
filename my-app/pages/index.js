@@ -4,6 +4,7 @@ import { Pagination } from '../components/Pagination/Pagination';
 import { debounce } from '../Utils/debounce';
 import { Games } from '../components/Games/Games';
 import { Controls } from '../components/Controls/Controls';
+import { Loader } from '../components/Loader/Loader';
 
 export default function Home({ initial }) {
   const [games, setGames] = useState(initial);
@@ -12,6 +13,7 @@ export default function Home({ initial }) {
     search: '',
     ordering: '',
     platforms: '4',
+    autoScroll: true,
   });
   const [isLoading, setIsLoading] = useState(false);
   const isMountRef = useRef(true);
@@ -55,7 +57,11 @@ export default function Home({ initial }) {
 
       <Controls setFilters={setFilters} />
 
-      <Games games={games} isLoading={isLoading} setGames={setGames} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Games games={games} isLoading={isLoading} filters={filters} setGames={setGames} />
+      )}
 
       <Pagination next={games.next} previous={games.previous} />
     </>

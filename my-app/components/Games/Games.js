@@ -2,12 +2,13 @@ import { useGetGamesByColumns } from '../../hooks/useGetGamesByColumns';
 import styled from 'styled-components';
 import { Card } from '../Card/Card';
 import { useScrollPagination } from '../../hooks/useScrollPagination';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export function Games({ games, setGames }) {
+export function Games({ games, setGames, filters }) {
+  const [isAutoScroll, setIsAutoScroll] = useState(filters.autoScroll);
+
   const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(games.results);
-
-  const { gamesList, scrolledGames, isFetching } = useScrollPagination({ games });
+  const { gamesList, scrolledGames, isFetching } = useScrollPagination({ games, isAutoScroll });
 
   useEffect(() => {
     const newGames = { ...scrolledGames, results: gamesList };
