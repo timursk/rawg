@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import { MainInfo } from './MainInfo';
 import Link from 'next/link';
 
-export const Card = ({ game: { name, background_image, rating, released, metacritic, id } }) => {
+export const Card = ({ game: { name, background_image, rating, released, metacritic, slug } }) => {
   const handleClick = () => {};
 
   return (
-    <Link href={`/games/${id}`}>
+    <Link href={`/games/${slug}`}>
       <Container onClick={handleClick}>
         <Image src={background_image}></Image>
 
