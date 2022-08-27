@@ -22,6 +22,7 @@ const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  border-bottom: 1px solid #e5e5e5;
   gap: 5px;
 `;
 

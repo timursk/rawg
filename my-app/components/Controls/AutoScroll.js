@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import autoscrollImg from '../../assets/autoscroll.png';
 import paginationImg from '../../assets/pagination.png';
 
-export function AutoScroll({ setFilters }) {
+export function AutoScroll({ setIsAutoScroll }) {
   const [value, setValue] = useState(true);
 
   const handleClick = () => {
     setValue(!value);
-    setFilters((prev) => ({ ...prev, autoScroll: !value }));
+    setIsAutoScroll(!value);
   };
 
   return (

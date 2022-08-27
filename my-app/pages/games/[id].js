@@ -1,3 +1,3 @@
-export default function () {
-  return <div>game</div>;
+export default function ({ initial }) {
+  return <div>123</div>;
 }

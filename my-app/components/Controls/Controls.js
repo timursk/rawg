@@ -3,12 +3,12 @@ import { Sort } from '../Sort/Sort';
 import styled from 'styled-components';
 import { AutoScroll } from './AutoScroll';
 
-export function Controls({ setFilters }) {
+export function Controls({ setFilters, setIsAutoScroll }) {
   return (
     <Container>
       <Sort setFilters={setFilters} />
       <Filter setFilters={setFilters} />
-      <AutoScroll setFilters={setFilters} />
+      <AutoScroll setIsAutoScroll={setIsAutoScroll} />
     </Container>
   );
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { MainInfo } from './MainInfo';
 import Link from 'next/link';
@@ -9,7 +8,7 @@ export const Card = ({ game: { name, background_image, rating, released, metacri
   return (
     <Link href={`/games/${id}`}>
       <Container onClick={handleClick}>
-        <Image src={background_image} alt={name} />
+        <Image src={background_image}></Image>
 
         <StyledDiv>
           <MainInfo name={name} rating={rating} metacritic={metacritic} />
@@ -41,9 +40,16 @@ const P = styled.p`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-const Image = styled.img`
-  width: 105%;
-  max-height: 500px;
+const Image = styled.div.attrs((props) => ({
+  style: {
+    backgroundImage: `url('${props.src}')`,
+  },
+}))`
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 const StyledDiv = styled.div`
