@@ -5,17 +5,21 @@ import { debounce } from '../Utils/debounce';
 import { Games } from '../components/Games/Games';
 import { Controls } from '../components/Controls/Controls';
 import { Loader } from '../components/Loader/Loader';
+import { useRouter } from 'next/router';
 
 export default function Home({ initial }) {
+  const { query } = useRouter();
+
   const [games, setGames] = useState(initial);
   const [filters, setFilters] = useState({
-    page: 1,
-    search: '',
-    ordering: '',
-    platforms: '4',
+    page: query.page || 1,
+    search: query.search || '',
+    ordering: query.ordering || '',
+    platforms: query.platforms || '4',
     autoScroll: true,
   });
   const [isLoading, setIsLoading] = useState(false);
+
   const isMountRef = useRef(true);
 
   if (isMountRef.current) {
