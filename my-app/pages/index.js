@@ -8,7 +8,8 @@ import { Loader } from '../components/Loader/Loader';
 import { useRouter } from 'next/router';
 
 export default function Home({ initial }) {
-  const { query } = useRouter();
+  const router = useRouter();
+  const { query } = router;
 
   const [games, setGames] = useState(initial);
   const [filters, setFilters] = useState({
@@ -22,12 +23,6 @@ export default function Home({ initial }) {
 
   const isMountRef = useRef(true);
 
-  if (isMountRef.current) {
-    fetch('https://api.rawg.io/api/platforms?key=2516c1a213f748d4b2f1ef169998a412')
-      .then((response) => response.json())
-      .then((res) => console.log('platforms', res));
-  }
-
   useEffect(() => {
     setGames(initial);
   }, [initial]);
@@ -38,26 +33,18 @@ export default function Home({ initial }) {
       return;
     }
 
-    const query = Object.entries(filters).reduce((prev, [key, value]) => {
-      return prev + '&' + key + '=' + value;
-    }, '');
+    const newQuery = { ...filters };
+    delete newQuery.autoScroll;
 
-    setIsLoading(true);
-
-    fetch(`https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412${query}`)
-      .then((response) => response.json())
-      .then((result) => {
-        setGames(result);
-      })
-      .catch((e) => console.log(e.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
+    router.push({
+      pathname: router.pathname,
+      query: newQuery,
+    });
   }, [filters]);
 
   return (
     <>
-      <Header setFilters={debounce(setFilters, 650)} />
+      <Header setFilters={debounce(setFilters, 500)} />
 
       <Controls setFilters={setFilters} />
 
@@ -72,9 +59,13 @@ export default function Home({ initial }) {
   );
 }
 
-export async function getServerSideProps({ query: { page = 1 } }) {
+export async function getServerSideProps({ query: initialQuery }) {
+  const query = Object.entries(initialQuery).reduce((prev, [key, value]) => {
+    return prev + `&${key}=${value}`;
+  }, '');
+
   const response = await fetch(
-    `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412&page=${page}`
+    `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412${query}`
   );
   const initial = await response.json();
 
