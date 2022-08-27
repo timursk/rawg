@@ -1,22 +1,14 @@
 import { useEffect, useState } from 'react';
 
-let isFetching = false;
-
-export function useScrollPagination({ initialGames, next }) {
-  console.log('INIT', initialGames, next);
+export function useScrollPagination({ games: initialGames }) {
   const [initial, setInitial] = useState(initialGames);
-  const [nextLink, setNextLink] = useState(next);
   const [games, setGames] = useState(initialGames.results);
-
-  console.log('scroll', initialGames, next);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     setInitial(initialGames);
+    setGames(initialGames.results);
   }, [initialGames]);
-
-  useEffect(() => {
-    setNextLink(next);
-  }, [next]);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
@@ -26,7 +18,7 @@ export function useScrollPagination({ initialGames, next }) {
   }, [handleScroll]);
 
   function handleScroll(e) {
-    if (!nextLink) {
+    if (!initial.next) {
       return;
     }
 
@@ -35,9 +27,10 @@ export function useScrollPagination({ initialGames, next }) {
       (e.target.documentElement.scrollTop + window.innerHeight);
 
     if (scrollHeightBottom < 100 && !isFetching) {
-      isFetching = true;
+      setIsFetching(true);
+
       const getNewGames = async () => {
-        const response = await fetch(nextLink);
+        const response = await fetch(initial.next);
         return await response.json();
       };
 
@@ -46,11 +39,61 @@ export function useScrollPagination({ initialGames, next }) {
           setInitial(result);
           setGames((prev) => [...prev, ...result.results]);
         })
+        .catch((e) => console.log(e.message))
         .finally(() => {
-          isFetching = false;
+          setIsFetching(false);
         });
     }
   }
 
-  return { scrolledGames: games, scrolledInitialGames: initial };
+  return { gamesList: games, scrolledGames: initial, isFetching };
 }
+// import { useEffect, useState } from 'react';
+
+// let isFetching = false;
+
+// export function useScrollPagination({ games: initialGames }) {
+//   const [initial, setInitial] = useState(initialGames);
+//   const [games, setGames] = useState(initialGames.results);
+
+//   useEffect(() => {
+//     setInitial(initialGames);
+//     setGames(initialGames.results);
+//   }, [initialGames]);
+
+//   useEffect(() => {
+//     document.addEventListener('scroll', handleScroll);
+//     return () => {
+//       document.removeEventListener('scroll', handleScroll);
+//     };
+//   }, [handleScroll]);
+
+//   function handleScroll(e) {
+//     if (!initial.next) {
+//       return;
+//     }
+
+//     const scrollHeightBottom =
+//       e.target.documentElement.scrollHeight -
+//       (e.target.documentElement.scrollTop + window.innerHeight);
+
+//     if (scrollHeightBottom < 100 && !isFetching) {
+//       isFetching = true;
+//       const getNewGames = async () => {
+//         const response = await fetch(initial.next);
+//         return await response.json();
+//       };
+
+//       getNewGames()
+//         .then((result) => {
+//           setInitial(result);
+//           setGames((prev) => [...prev, ...result.results]);
+//         })
+//         .finally(() => {
+//           isFetching = false;
+//         });
+//     }
+//   }
+
+//   return { gamesList: games, scrolledGames: initial, isFetching };
+// }

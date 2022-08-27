@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { Search } from './Search';
 
-export function Header({ handleSearch }) {
+export function Header({ setFilters }) {
   const handleChange = (e) => {
-    handleSearch(e.target.value);
+    setFilters((prev) => ({ ...prev, search: e.target.value }));
   };
 
   return (

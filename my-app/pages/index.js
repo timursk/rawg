@@ -1,82 +1,63 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Card } from '../components/Card/Card';
+import { useEffect, useRef, useState } from 'react';
 import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
-import { useGetGamesByColumns } from '../hooks/useGetGamesByColumns';
 import { debounce } from '../Utils/debounce';
-import { useScrollPagination } from '../hooks/useScrollPagination';
 import { Sort } from '../components/Sort/Sort';
+import { Games } from '../components/Games/Games';
+import { Filter } from '../components/Filter/Filter';
 
 export default function Home({ initial }) {
   const [games, setGames] = useState(initial);
-  // const [results, setResults] = useState(initial.results);
-  // console.log('res', results);
-  // const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(results);
-  const { gamesByColumn, allGames, setAllGames, addNewGames } = useGetGamesByColumns(games.results);
-  console.log('games', games);
-  const { scrolledGames, scrolledInitialGames } = useScrollPagination({
-    initialGames: games,
-    next: games.next,
+  const [filters, setFilters] = useState({
+    page: 1,
+    search: '',
+    ordering: '',
+    platforms: '4',
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const isMountRef = useRef(true);
+
+  if (isMountRef.current) {
+    fetch('https://api.rawg.io/api/platforms?key=2516c1a213f748d4b2f1ef169998a412')
+      .then((response) => response.json())
+      .then((res) => console.log('platforms', res));
+  }
 
   useEffect(() => {
     setGames(initial);
-    // setResults(initial.results);
   }, [initial]);
 
   useEffect(() => {
-    const newTest = { ...scrolledInitialGames, results: scrolledGames };
-    setGames(newTest);
-    // setGames(scrolledInitialGames);
-    // addNewGames(scrolledGames);
-  }, [scrolledGames]);
+    if (isMountRef.current) {
+      isMountRef.current = false;
+      return;
+    }
 
-  const handleSearch = useCallback(
-    (value) => {
-      async function getGames(search) {
-        const response = await fetch(
-          `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412&search=${search}`
-        );
-        return await response.json();
-      }
+    const query = Object.entries(filters).reduce((prev, [key, value]) => {
+      return prev + '&' + key + '=' + value;
+    }, '');
 
-      getGames(value).then((result) => {
+    setIsLoading(true);
+
+    fetch(`https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412${query}`)
+      .then((response) => response.json())
+      .then((result) => {
         setGames(result);
+      })
+      .catch((e) => console.log(e.message))
+      .finally(() => {
+        setIsLoading(false);
       });
-    },
-    [gamesByColumn]
-  );
-
-  const debouncedHandleSearch = useCallback(debounce(handleSearch, 650), [handleSearch]);
+  }, [filters]);
 
   return (
     <>
-      <Header handleSearch={debouncedHandleSearch} />
+      <Header setFilters={debounce(setFilters, 650)} />
 
-      {/* <div>
-        <Sort games={allGames} setGames={setAllGames} />
-      </div> */}
+      <Sort filters={filters} setFilters={setFilters} />
+      <Filter filters={filters} setFilters={setFilters} />
 
-      {/* {gamesByColumn?.length && (
-        <Container>
-          {gamesByColumn.map((gamesColumn, idx) => {
-            if (!gamesColumn?.length) {
-              return;
-            }
-
-            return (
-              <Column key={idx}>
-                {gamesColumn.map((game) => (
-                  <Card key={game.id} game={game} />
-                ))}
-              </Column>
-            );
-          })}
-        </Container>
-      )} */}
+      <Games games={games} isLoading={isLoading} setGames={setGames} />
 
       <Pagination next={games.next} previous={games.previous} />
     </>
@@ -93,27 +74,3 @@ export async function getServerSideProps({ query: { page = 1 } }) {
     props: { initial },
   };
 }
-
-const Container = styled.div`
-  display: grid;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 900px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const Column = styled.div`
-  & > div {
-    margin-bottom: 10px;
-  }
-  & > div:last-child {
-    margin-bottom: 0;
-  }
-`;
