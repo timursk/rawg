@@ -13,6 +13,7 @@ export const Card = ({ game: { name, background_image, rating, released, metacri
 
         <StyledDiv>
           <MainInfo name={name} rating={rating} metacritic={metacritic} />
+
           <p>
             Release date: <b>{released}</b>
           </p>
@@ -32,6 +33,7 @@ const Container = styled.div`
   border-radius: 1rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   overflow: hidden;
+  cursor: pointer;
   // background-color: #202020;
 `;
 
