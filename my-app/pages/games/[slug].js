@@ -3,25 +3,35 @@ import { BackBtn } from '../../components/BackBtn';
 import { GameInfo } from '../../components/GameComponents/GameInfo';
 import { About } from '../../components/GameComponents/About';
 import { Slider } from '../../components/Slider';
+import Head from 'next/head';
+import { API_URL, KEY_URL } from '../../utils/constants';
 
 export default function ({ game, screenshots }) {
   return (
-    <Container background_image={game.background_image}>
-      <BackBtn />
+    <>
+      <Head>
+        <title>{game.name}</title>
+      </Head>
 
-      <GameContainer>
-        <h1>{game.name}</h1>
+      <Container background_image={game.background_image}>
+        <BackBtn />
 
-        <div>
-          <p>{screenshots?.results.length} screenshots</p>
-          <Slider images={screenshots.results} />
-        </div>
+        <GameContainer>
+          <h1>{game.name}</h1>
 
-        <About description_raw={game.description_raw} />
+          {screenshots?.results?.length && (
+            <div>
+              <p>{screenshots.results.length} screenshots</p>
+              <Slider images={screenshots.results} />
+            </div>
+          )}
 
-        <GameInfo game={game} />
-      </GameContainer>
-    </Container>
+          <About description_raw={game.description_raw} />
+
+          <GameInfo game={game} />
+        </GameContainer>
+      </Container>
+    </>
   );
 }
 
@@ -56,14 +66,10 @@ const GameContainer = styled.div`
 `;
 
 export async function getStaticProps({ params: { slug } }) {
-  const gameResponse = await fetch(
-    `https://api.rawg.io/api/games/${slug}?key=2516c1a213f748d4b2f1ef169998a412`
-  );
+  const gameResponse = await fetch(`${API_URL}/${slug}${KEY_URL}`);
   const game = await gameResponse.json();
 
-  const screenshotsResponse = await fetch(
-    `https://api.rawg.io/api/games/${slug}/screenshots?key=2516c1a213f748d4b2f1ef169998a412`
-  );
+  const screenshotsResponse = await fetch(`${API_URL}/${slug}/screenshots${KEY_URL}`);
   const screenshots = await screenshotsResponse.json();
 
   return {

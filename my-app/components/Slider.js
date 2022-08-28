@@ -6,7 +6,6 @@ export function Slider({ images }) {
     return null;
   }
   const [slide, setSlide] = useState(0);
-
   const handleBack = () => {
     const newSlide = slide <= 0 ? images.length - 1 : slide - 1;
     setSlide(newSlide);
@@ -69,6 +68,7 @@ const SliderWrapper = styled.div`
 `;
 
 const Image = styled.img`
+  flex: 0 0 100%;
   width: 100%;
   height: 250px;
   object-fit: cover;
