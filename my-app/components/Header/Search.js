@@ -1,10 +1,23 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import searchIcon from '../../assets/search-icon.svg';
 
 export function Search({ handleChange }) {
+  const [value, setValue] = useState('');
+
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+    handleChange(e);
+  };
+
   return (
     <StyledLabel>
-      <StyledInput onChange={handleChange} type="text" placeholder="search"></StyledInput>
+      <StyledInput
+        value={value}
+        type="text"
+        placeholder="search"
+        onChange={handleInputChange}
+      ></StyledInput>
     </StyledLabel>
   );
 }
@@ -31,6 +44,5 @@ const StyledInput = styled.input`
   padding-left: 40px;
   border: none;
   border-radius: 5px;
-  // background: grey;
   font-size: 1.3rem;
 `;

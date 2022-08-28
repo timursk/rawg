@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import downImg from '../../assets/down.svg';
 
 export function DropDown({ isOpen, dropDownRef, value, list, setIsOpen, handleClick }) {
   const handleOpen = () => {
@@ -48,6 +49,19 @@ const DropDownHeader = styled('div')`
   cursor: pointer;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    transform: translateY(-50%);
+    background-image: url('${downImg.src}');
+  }
 `;
 
 const DropDownListContainer = styled('div')`
@@ -64,7 +78,7 @@ const DropDownList = styled('ul')`
   padding: 0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   margin: 0;
-  background: #ffffff;
+  background: #000;
   border: 1px solid #e5e5e5;
   box-sizing: border-box;
   font-weight: 500;
@@ -77,12 +91,12 @@ const ListItem = styled('li')`
   ${(props) =>
     props.isDisabled &&
     `
-    background: #efefef;
+    background: #d7d7d7;
   `}
 
   &:hover,
   &:active,
   &:focus {
-    background: #e5e5e5;
+    background: #666666;
   }
 `;

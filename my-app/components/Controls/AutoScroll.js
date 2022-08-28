@@ -27,7 +27,7 @@ const Container = styled.div`
 
 const StyledButton = styled.button`
   width: 50px;
-  height: 100%;
+  height: 45px;
   border: 1px solid #e5e5e5;
   transition: all 0.3s;
   background: ${(props) => (props.disabled ? '#efefef' : '#fff')};

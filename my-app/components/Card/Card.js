@@ -13,9 +13,9 @@ export const Card = ({ game: { name, background_image, rating, released, metacri
         <StyledDiv>
           <MainInfo name={name} rating={rating} metacritic={metacritic} />
 
-          <p>
+          <StyledP>
             Release date: <b>{released}</b>
-          </p>
+          </StyledP>
         </StyledDiv>
       </Container>
     </Link>
@@ -28,12 +28,11 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(149, 157, 165, 0.2);
   border-radius: 1rem;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: #2d2d2d;
+  box-shadow: rgb(0 0 0 / 14%) 5px 5px 5px;
   overflow: hidden;
   cursor: pointer;
-  // background-color: #202020;
 `;
 
 const Image = styled.div.attrs((props) => ({
@@ -51,4 +50,8 @@ const Image = styled.div.attrs((props) => ({
 const StyledDiv = styled.div`
   width: 100%;
   padding: 0 5px;
+`;
+
+const StyledP = styled.p`
+  color: #d3d3d3;
 `;
