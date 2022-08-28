@@ -7,20 +7,15 @@ export function Slider({ images }) {
   }
   const [slide, setSlide] = useState(1);
 
-  const handleClick = (add) => {
-    switch (slide + add) {
-      case images.length: {
-        setSlide(0);
-        break;
-      }
-      case -1: {
-        setSlide(images.length - 1);
-        break;
-      }
-      default: {
-        setSlide(slide + add);
-      }
-    }
+  const handleBack = () => {
+    const newSlide = slide !== 0 ? slide - 1 : images.length - 1;
+    setSlide(newSlide);
+  };
+
+  const handleNext = () => {
+    const sum = slide + 1;
+    const newSlide = sum !== images.length ? sum : 0;
+    setSlide(newSlide);
   };
 
   return (
@@ -28,17 +23,17 @@ export function Slider({ images }) {
       <SliderContainer>
         <SliderWrapper slide={slide}>
           {images.map(({ id, image }) => (
-            <Image onClick={handleClick} src={image} key={id} />
+            <Image src={image} key={id} />
           ))}
         </SliderWrapper>
       </SliderContainer>
 
       <Controls>
-        <StyledButton onClick={() => handleClick(-1)}>
+        <StyledButton onClick={handleBack}>
           <Arrow left></Arrow>
         </StyledButton>
 
-        <StyledButton onClick={() => handleClick(1)}>
+        <StyledButton onClick={handleNext}>
           <Arrow right></Arrow>
         </StyledButton>
       </Controls>
@@ -97,5 +92,6 @@ const StyledButton = styled.button`
   background-repeat: no-repeat;
   background-color: #fff;
   color: #000;
+  cursor: pointer;
 }
 `;
