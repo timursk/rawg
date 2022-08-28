@@ -5,6 +5,8 @@ import { debounce } from '../utils/debounce';
 import { Games } from '../components/Games';
 import { Controls } from '../components/Controls/Controls';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { API_URL, KEY_URL } from '../utils/constants';
 
 export default function Home({ initial }) {
   const router = useRouter();
@@ -39,6 +41,10 @@ export default function Home({ initial }) {
 
   return (
     <>
+      <Head>
+        <title>List of Video Games</title>
+      </Head>
+
       <Header setFilters={debounce(setFilters, 500)} />
 
       <Controls filters={filters} setFilters={setFilters} setIsAutoScroll={setIsAutoScroll} />
@@ -60,9 +66,7 @@ export async function getServerSideProps({ query: initialQuery }) {
     return prev + `&${key}=${value}`;
   }, '');
 
-  const response = await fetch(
-    `https://api.rawg.io/api/games?key=2516c1a213f748d4b2f1ef169998a412${query}`
-  );
+  const response = await fetch(`${API_URL}${KEY_URL}${query}`);
   const initial = await response.json();
 
   return {
