@@ -1,5 +1,5 @@
-import { Filter } from '../Filter/Filter';
-import { Sort } from '../Sort/Sort';
+import { Filter } from './Filter';
+import { Sort } from './Sort';
 import styled from 'styled-components';
 import { AutoScroll } from './AutoScroll';
 

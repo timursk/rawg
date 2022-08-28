@@ -5,16 +5,16 @@ export function Slider({ images }) {
   if (!images?.length) {
     return null;
   }
-  const [slide, setSlide] = useState(1);
+  const [slide, setSlide] = useState(0);
 
   const handleBack = () => {
-    const newSlide = slide !== 0 ? slide - 1 : images.length - 1;
+    const newSlide = slide <= 0 ? images.length - 1 : slide - 1;
     setSlide(newSlide);
   };
 
   const handleNext = () => {
     const sum = slide + 1;
-    const newSlide = sum !== images.length ? sum : 0;
+    const newSlide = sum < images.length ? sum : 0;
     setSlide(newSlide);
   };
 

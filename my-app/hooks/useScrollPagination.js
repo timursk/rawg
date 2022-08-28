@@ -43,7 +43,6 @@ export function useScrollPagination({ games: initialGames, isAutoScroll }) {
   );
 
   useEffect(() => {
-    console.log('isAutoScroll in hook', isAutoScroll);
     if (!isAutoScroll) {
       document.removeEventListener('scroll', handleScroll);
       return;

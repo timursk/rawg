@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { DropDown } from '../DropDown/DropDown';
+import { DropDown } from './DropDown';
 
 const platforms = [
   { title: 'PC', dataValue: '4' },

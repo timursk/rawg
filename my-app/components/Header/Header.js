@@ -21,7 +21,6 @@ const StyledHeader = styled.header`
   align-items: center;
   min-height: 64px;
   padding: 10px;
-  background: purple;
   gap: 40px;
 `;
 

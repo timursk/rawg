@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DropDown } from '../DropDown/DropDown';
+import { DropDown } from './DropDown';
 import { useRef } from 'react';
 
 const sort = [

@@ -14,7 +14,6 @@ export default function ({ game, screenshots }) {
 
         <div>
           <p>{screenshots.count} screenshots</p>
-
           <Slider images={screenshots.results} />
         </div>
 
@@ -53,6 +52,7 @@ const Container = styled.div`
 
 const GameContainer = styled.div`
   max-width: 900px;
+  min-width: 300px;
 `;
 
 export async function getStaticProps({ params: { slug } }) {

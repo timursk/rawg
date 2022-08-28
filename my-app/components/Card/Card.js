@@ -36,10 +36,6 @@ const Container = styled.div`
   // background-color: #202020;
 `;
 
-const P = styled.p`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
 const Image = styled.div.attrs((props) => ({
   style: {
     backgroundImage: `url('${props.src}')`,

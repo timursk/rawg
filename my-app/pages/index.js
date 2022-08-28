@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Header } from '../components/Header/Header';
-import { Pagination } from '../components/Pagination/Pagination';
+import { Pagination } from '../components/Pagination';
 import { debounce } from '../utils/debounce';
-import { Games } from '../components/Games/Games';
+import { Games } from '../components/Games';
 import { Controls } from '../components/Controls/Controls';
-import { Loader } from '../components/Loader/Loader';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
-import { Card } from '../components/Card/Card';
 
 export default function Home({ initial }) {
   const router = useRouter();
