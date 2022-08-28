@@ -45,7 +45,12 @@ export default function Home({ initial }) {
 
       <Games games={games} isAutoScroll={isAutoScroll} setGames={setGames} />
 
-      <Pagination next={games.next} previous={games.previous} />
+      <Pagination
+        next={games.next}
+        previous={games.previous}
+        filters={filters}
+        setFilters={setFilters}
+      />
     </>
   );
 }

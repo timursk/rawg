@@ -30,9 +30,10 @@ const StyledButton = styled.button`
   height: 45px;
   border: 1px solid #e5e5e5;
   transition: all 0.3s;
-  background: ${(props) => (props.disabled ? '#efefef' : '#fff')};
+  background: ${(props) => (props.disabled ? '#2d2d2d' : '#fff')};
   background-image: url('${(props) => props.img}');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: pointer;
 `;

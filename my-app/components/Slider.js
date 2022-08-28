@@ -86,10 +86,6 @@ const StyledButton = styled.button`
   height: 25px;
   padding: 0;
   border: none;
-  background-image: url('${(props) => props.img}');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
   background-color: #fff;
   color: #000;
   cursor: pointer;

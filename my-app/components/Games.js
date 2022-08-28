@@ -4,7 +4,7 @@ import { useScrollPagination } from '../hooks/useScrollPagination';
 import { useEffect } from 'react';
 
 export function Games({ games, isAutoScroll, setGames }) {
-  const { gamesList, scrolledGames, isFetching } = useScrollPagination({ games, isAutoScroll });
+  const { gamesList, scrolledGames } = useScrollPagination({ games, isAutoScroll });
 
   useEffect(() => {
     const newGames = { ...scrolledGames, results: gamesList };

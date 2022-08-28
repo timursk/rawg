@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 
-export function Pagination({ next, previous }) {
-  const router = useRouter();
-
-  const [currentPage, setCurrentPage] = useState(+router.query.page || 1);
+export function Pagination({ next, previous, filters, setFilters }) {
+  const [currentPage, setCurrentPage] = useState(Number(filters.page));
   const [pages, setPages] = useState([]);
 
   const handleClick = (addend) => {
-    router.push({
-      pathname: router.pathname,
-      query: { page: currentPage + Number(addend) },
-    });
-
+    setFilters((prev) => ({ ...prev, page: currentPage + Number(addend) }));
     setCurrentPage((currentPage) => currentPage + Number(addend));
+  };
+
+  const handleSet = (val) => {
+    setFilters((prev) => ({ ...prev, page: val }));
+    setCurrentPage(val);
   };
 
   useEffect(() => {
@@ -31,20 +29,46 @@ export function Pagination({ next, previous }) {
 
   return (
     <Container>
-      <button disabled={!previous} onClick={() => handleClick(-1)}>{`<-`}</button>
+      <StyledButton disabled={!previous} onClick={() => handleClick(-1)}>
+        <Arrow left={true}></Arrow>
+      </StyledButton>
 
       <PagesContainer>
         {pages.map((item, idx) => (
-          <PageItem key={idx} isCurrent={item === currentPage}>
+          <PageItem key={idx} isCurrent={item === currentPage} onClick={() => handleSet(item)}>
             {item}
           </PageItem>
         ))}
       </PagesContainer>
 
-      <button disabled={!next} onClick={() => handleClick(1)}>{`->`}</button>
+      <StyledButton disabled={!next} onClick={() => handleClick(1)}>
+        <Arrow right={true}></Arrow>
+      </StyledButton>
     </Container>
   );
 }
+
+const Arrow = styled.div`
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+
+  transform: rotate(${(props) => (props.left ? 135 : props.right ? -45 : 0)}deg);
+`;
+
+const StyledButton = styled.button`
+  width: 20px;
+  height: 20px;
+  padding: 15px;
+  border: none;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -70,5 +94,8 @@ const PageItem = styled.div`
   height: 20px;
   border: 1px solid grey;
   border-radius: 4px;
-  background: ${(props) => (props.isCurrent ? 'green' : 'inherit')};
+  background: ${(props) => (props.isCurrent ? '#fff' : 'inherit')};
+  color: ${(props) => (props.isCurrent ? '#000' : 'inherit')};
+  transition: all 0.2s ease;
+  cursor: pointer;
 `;
