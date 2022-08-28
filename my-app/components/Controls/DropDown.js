@@ -38,7 +38,7 @@ export function DropDown({ isOpen, dropDownRef, value, list, setIsOpen, handleCl
 }
 
 const DropDownContainer = styled('div')`
-  width: 125px;
+  width: 145px;
   margin: 0 auto;
 `;
 
@@ -66,12 +66,13 @@ const DropDownHeader = styled('div')`
 
 const DropDownListContainer = styled('div')`
   position: absolute;
-  width: 125px;
+  width: 145px;
   transition: all 0.1s ease;
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   pointer-events: ${(props) => (props.isOpen ? 'all' : 'none')};
   user-select: none;
   cursor: pointer;
+  z-index: 1;
 `;
 
 const DropDownList = styled('ul')`

@@ -9,8 +9,12 @@ const platforms = [
   { title: 'MacOS', dataValue: '5' },
 ];
 
+const getPlatform = (value) => {
+  return platforms.find((platform) => platform.dataValue === value)?.title;
+};
+
 export function Filter({ filters, setFilters }) {
-  const [value, setValue] = useState('PC');
+  const [value, setValue] = useState(getPlatform(filters.platforms) || 'PC');
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef(null);
 

@@ -41,7 +41,7 @@ export default function Home({ initial }) {
     <>
       <Header setFilters={debounce(setFilters, 500)} />
 
-      <Controls setFilters={setFilters} setIsAutoScroll={setIsAutoScroll} />
+      <Controls filters={filters} setFilters={setFilters} setIsAutoScroll={setIsAutoScroll} />
 
       <Games games={games} isAutoScroll={isAutoScroll} setGames={setGames} />
 

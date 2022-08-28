@@ -5,7 +5,7 @@ export function Item({ title, value, isBig, children }) {
     <Container isBig={isBig}>
       <ItemTitle>{title}</ItemTitle>
 
-      <span>{value}</span>
+      <span>{value || 'none'}</span>
       {children}
     </Container>
   );

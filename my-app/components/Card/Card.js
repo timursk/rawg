@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 import { MainInfo } from './MainInfo';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Card = ({ game: { name, background_image, rating, released, metacritic, slug } }) => {
-  const handleClick = () => {};
-
   return (
     <Link href={`/games/${slug}`}>
-      <Container onClick={handleClick}>
-        <Image src={background_image}></Image>
+      <Container>
+        {background_image && (
+          <StyledImage src={`${background_image}`} alt={name} width={500} height={250} />
+        )}
 
         <StyledDiv>
           <MainInfo name={name} rating={rating} metacritic={metacritic} />
@@ -35,17 +36,23 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const Image = styled.div.attrs((props) => ({
-  style: {
-    backgroundImage: `url('${props.src}')`,
-  },
-}))`
+const StyledImage = styled(Image)`
   width: 100%;
   height: 180px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  object-fit: cover;
 `;
+
+// const StyledImage = styled.div.attrs((props) => ({
+//   style: {
+//     backgroundImage: `url('${props.src}')`,
+//   },
+// }))`
+//   width: 100%;
+//   height: 180px;
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+// `;
 
 const StyledDiv = styled.div`
   width: 100%;

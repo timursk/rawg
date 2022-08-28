@@ -10,8 +10,12 @@ const sort = [
   { title: 'Release (Old)', dataValue: 'released' },
 ];
 
-export function Sort({ setFilters }) {
-  const [value, setValue] = useState('Relevance');
+const getOrdering = (value) => {
+  return sort.find((item) => item.dataValue === value)?.title;
+};
+
+export function Sort({ filters, setFilters }) {
+  const [value, setValue] = useState(getOrdering(filters.ordering) || 'Relevance');
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef(null);
 

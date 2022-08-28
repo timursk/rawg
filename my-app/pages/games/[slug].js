@@ -13,7 +13,7 @@ export default function ({ game, screenshots }) {
         <h1>{game.name}</h1>
 
         <div>
-          <p>{screenshots.count} screenshots</p>
+          <p>{screenshots?.results.length} screenshots</p>
           <Slider images={screenshots.results} />
         </div>
 
