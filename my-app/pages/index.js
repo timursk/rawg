@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Header } from '../components/Header/Header';
-import { Pagination } from '../components/Pagination/Pagination';
-import { debounce } from '../Utils/debounce';
-import { Games } from '../components/Games/Games';
+import { Pagination } from '../components/Pagination';
+import { debounce } from '../utils/debounce';
+import { Games } from '../components/Games';
 import { Controls } from '../components/Controls/Controls';
-import { Loader } from '../components/Loader/Loader';
 import { useRouter } from 'next/router';
 
 export default function Home({ initial }) {
@@ -17,10 +16,9 @@ export default function Home({ initial }) {
     search: query.search || '',
     ordering: query.ordering || '',
     platforms: query.platforms || '4',
-    autoScroll: true,
   });
-  const [isLoading, setIsLoading] = useState(false);
 
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
   const isMountRef = useRef(true);
 
   useEffect(() => {
@@ -33,12 +31,9 @@ export default function Home({ initial }) {
       return;
     }
 
-    const newQuery = { ...filters };
-    delete newQuery.autoScroll;
-
     router.push({
       pathname: router.pathname,
-      query: newQuery,
+      query: filters,
     });
   }, [filters]);
 
@@ -46,15 +41,16 @@ export default function Home({ initial }) {
     <>
       <Header setFilters={debounce(setFilters, 500)} />
 
-      <Controls setFilters={setFilters} />
+      <Controls filters={filters} setFilters={setFilters} setIsAutoScroll={setIsAutoScroll} />
 
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Games games={games} isLoading={isLoading} filters={filters} setGames={setGames} />
-      )}
+      <Games games={games} isAutoScroll={isAutoScroll} setGames={setGames} />
 
-      <Pagination next={games.next} previous={games.previous} />
+      <Pagination
+        next={games.next}
+        previous={games.previous}
+        filters={filters}
+        setFilters={setFilters}
+      />
     </>
   );
 }

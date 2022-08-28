@@ -1,11 +1,12 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import '../styles/globals.css';
 
 const GlobalStyle = createGlobalStyle`
   html,  
   body {
     padding: 0;
     margin: 0;
+    background: #000;
+    color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
       Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   }

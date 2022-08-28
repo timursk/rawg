@@ -1,23 +1,36 @@
-import { Filter } from '../Filter/Filter';
-import { Sort } from '../Sort/Sort';
+import { Filter } from './Filter';
+import { Sort } from './Sort';
 import styled from 'styled-components';
 import { AutoScroll } from './AutoScroll';
 
-export function Controls({ setFilters }) {
+export function Controls({ filters, setFilters, setIsAutoScroll }) {
   return (
     <Container>
-      <Sort setFilters={setFilters} />
-      <Filter setFilters={setFilters} />
-      <AutoScroll setFilters={setFilters} />
+      <StyledDiv>
+        <Sort filters={filters} setFilters={setFilters} />
+        <Filter filters={filters} setFilters={setFilters} />
+      </StyledDiv>
+
+      <AutoScroll setIsAutoScroll={setIsAutoScroll} />
     </Container>
   );
 }
 
 const Container = styled.div`
   margin-left: auto;
-  width: fit-content;
-  height: 50px;
   padding: 5px 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @media (max-width: 450px) {
+    justify-content: flex-end;
+  }
+`;
+
+const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;

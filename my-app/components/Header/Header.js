@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 import { Search } from './Search';
 
@@ -8,7 +9,9 @@ export function Header({ setFilters }) {
 
   return (
     <StyledHeader>
-      <Title>RAWG</Title>
+      <Link href={'/'}>
+        <Title>RAWG</Title>
+      </Link>
 
       <Search handleChange={handleChange} />
     </StyledHeader>
@@ -21,11 +24,16 @@ const StyledHeader = styled.header`
   align-items: center;
   min-height: 64px;
   padding: 10px;
-  background: purple;
   gap: 40px;
 `;
 
 const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
+  transition: color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #2d2d2d;
+  }
 `;

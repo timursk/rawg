@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import downImg from '../../assets/down.svg';
 
 export function DropDown({ isOpen, dropDownRef, value, list, setIsOpen, handleClick }) {
   const handleOpen = () => {
@@ -37,7 +38,7 @@ export function DropDown({ isOpen, dropDownRef, value, list, setIsOpen, handleCl
 }
 
 const DropDownContainer = styled('div')`
-  width: 125px;
+  width: 145px;
   margin: 0 auto;
 `;
 
@@ -48,23 +49,37 @@ const DropDownHeader = styled('div')`
   cursor: pointer;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    transform: translateY(-50%);
+    background-image: url('${downImg.src}');
+  }
 `;
 
 const DropDownListContainer = styled('div')`
   position: absolute;
-  width: 125px;
+  width: 145px;
   transition: all 0.1s ease;
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   pointer-events: ${(props) => (props.isOpen ? 'all' : 'none')};
   user-select: none;
   cursor: pointer;
+  z-index: 1;
 `;
 
 const DropDownList = styled('ul')`
   padding: 0;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
   margin: 0;
-  background: #ffffff;
+  background: #000;
   border: 1px solid #e5e5e5;
   box-sizing: border-box;
   font-weight: 500;
@@ -77,12 +92,12 @@ const ListItem = styled('li')`
   ${(props) =>
     props.isDisabled &&
     `
-    background: #efefef;
+    background: #d7d7d7;
   `}
 
   &:hover,
   &:active,
   &:focus {
-    background: #e5e5e5;
+    background: #666666;
   }
 `;

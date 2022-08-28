@@ -9,6 +9,9 @@ const nextConfig = {
       displayName: true,
     },
   },
+  images: {
+    domains: ['media.rawg.io'],
+  },
 };
 
 module.exports = nextConfig;

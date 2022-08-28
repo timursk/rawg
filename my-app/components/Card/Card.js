@@ -1,22 +1,22 @@
-import React from 'react';
 import styled from 'styled-components';
 import { MainInfo } from './MainInfo';
 import Link from 'next/link';
+import Image from 'next/image';
 
-export const Card = ({ game: { name, background_image, rating, released, metacritic, id } }) => {
-  const handleClick = () => {};
-
+export const Card = ({ game: { name, background_image, rating, released, metacritic, slug } }) => {
   return (
-    <Link href={`/games/${id}`}>
-      <Container onClick={handleClick}>
-        <Image src={background_image} alt={name} />
+    <Link href={`/games/${slug}`}>
+      <Container>
+        {background_image && (
+          <StyledImage src={`${background_image}`} alt={name} width={500} height={250} />
+        )}
 
         <StyledDiv>
           <MainInfo name={name} rating={rating} metacritic={metacritic} />
 
-          <p>
+          <StyledP>
             Release date: <b>{released}</b>
-          </p>
+          </StyledP>
         </StyledDiv>
       </Container>
     </Link>
@@ -29,24 +29,36 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(149, 157, 165, 0.2);
   border-radius: 1rem;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-color: #2d2d2d;
+  box-shadow: rgb(0 0 0 / 14%) 5px 5px 5px;
   overflow: hidden;
   cursor: pointer;
-  // background-color: #202020;
 `;
 
-const P = styled.p`
-  color: ${({ theme }) => theme.colors.primary};
+const StyledImage = styled(Image)`
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
 `;
 
-const Image = styled.img`
-  width: 105%;
-  max-height: 500px;
-`;
+// const StyledImage = styled.div.attrs((props) => ({
+//   style: {
+//     backgroundImage: `url('${props.src}')`,
+//   },
+// }))`
+//   width: 100%;
+//   height: 180px;
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+// `;
 
 const StyledDiv = styled.div`
   width: 100%;
   padding: 0 5px;
+`;
+
+const StyledP = styled.p`
+  color: #d3d3d3;
 `;

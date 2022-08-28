@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import autoscrollImg from '../../assets/autoscroll.png';
 import paginationImg from '../../assets/pagination.png';
 
-export function AutoScroll({ setFilters }) {
+export function AutoScroll({ setIsAutoScroll }) {
   const [value, setValue] = useState(true);
 
   const handleClick = () => {
     setValue(!value);
-    setFilters((prev) => ({ ...prev, autoScroll: !value }));
+    setIsAutoScroll(!value);
   };
 
   return (
@@ -27,12 +27,13 @@ const Container = styled.div`
 
 const StyledButton = styled.button`
   width: 50px;
-  height: 100%;
+  height: 45px;
   border: 1px solid #e5e5e5;
   transition: all 0.3s;
-  background: ${(props) => (props.disabled ? '#efefef' : '#fff')};
+  background: ${(props) => (props.disabled ? '#2d2d2d' : '#fff')};
   background-image: url('${(props) => props.img}');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: pointer;
 `;
