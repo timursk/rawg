@@ -8,12 +8,12 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { API_URL, KEY_URL } from '../utils/constants';
 import { Loader } from '../components/Loader';
+import { useRouteLoading } from '../hooks/useRouteLoading';
 
 export default function Home({ initial }) {
   const router = useRouter();
   const { query } = router;
 
-  const [loading, setLoading] = useState(false);
   const [games, setGames] = useState(initial);
   const [filters, setFilters] = useState({
     page: query.page || 1,
@@ -24,23 +24,11 @@ export default function Home({ initial }) {
 
   const [isAutoScroll, setIsAutoScroll] = useState(true);
   const isMountRef = useRef(true);
+  const isLoading = useRouteLoading();
 
   useEffect(() => {
     setGames(initial);
   }, [initial]);
-
-  useEffect(() => {
-    const startLoading = () => setLoading(true);
-    const stopLoading = () => setLoading(false);
-
-    router.events.on('routeChangeStart', startLoading);
-    router.events.on('routeChangeComplete', stopLoading);
-
-    return () => {
-      router.events.off('routeChangeStart', startLoading);
-      router.events.off('routeChangeComplete', stopLoading);
-    };
-  }, []);
 
   useEffect(() => {
     if (isMountRef.current) {
@@ -63,7 +51,7 @@ export default function Home({ initial }) {
 
       <Controls filters={filters} setFilters={setFilters} setIsAutoScroll={setIsAutoScroll} />
 
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <Games games={games} isAutoScroll={isAutoScroll} setGames={setGames} />
