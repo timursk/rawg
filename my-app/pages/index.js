@@ -9,19 +9,20 @@ import Head from 'next/head';
 import { API_URL, KEY_URL } from '../utils/constants';
 import { Loader } from '../components/Loader';
 import { useRouteLoading } from '../hooks/useRouteLoading';
+import { initialFilters } from '../constants/constants';
 
 export default function Home({ initial }) {
   const router = useRouter();
   const { query } = router;
 
-  const [games, setGames] = useState(initial);
   const [filters, setFilters] = useState({
-    page: query.page || 1,
-    search: query.search || '',
-    ordering: query.ordering || '',
-    platforms: query.platforms || '4',
+    page: query.page || initialFilters.page,
+    search: query.search || initialFilters.search,
+    ordering: query.ordering || initialFilters.ordering,
+    platforms: query.platforms || initialFilters.platforms,
   });
 
+  const [games, setGames] = useState(initial);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
   const isMountRef = useRef(true);
   const isLoading = useRouteLoading();
@@ -41,6 +42,7 @@ export default function Home({ initial }) {
       query: filters,
     });
   }, [filters]);
+
   return (
     <>
       <Head>
