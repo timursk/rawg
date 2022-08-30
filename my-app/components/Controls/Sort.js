@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DropDown } from './DropDown';
 import { useRef } from 'react';
-import { sort } from '../../constants/constants';
+import { sort } from '../../utils/constants';
 
 const getOrdering = (value) => {
   return sort.find((item) => item.dataValue === value)?.title;

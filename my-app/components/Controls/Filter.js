@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { platforms } from '../../constants/constants';
+import { platforms } from '../../utils/constants';
 import { DropDown } from './DropDown';
 
 const getPlatform = (value) => {

@@ -8,7 +8,7 @@ export const Card = ({ game: { name, background_image, rating, released, metacri
     <Link href={`/games/${slug}`}>
       <Container>
         {background_image && (
-          <StyledImage src={`${background_image}`} alt={name} width={500} height={250} />
+          <StyledImage src={background_image} alt={name} width={500} height={250} />
         )}
 
         <StyledDiv>
@@ -41,18 +41,6 @@ const StyledImage = styled(Image)`
   height: 180px;
   object-fit: cover;
 `;
-
-// const StyledImage = styled.div.attrs((props) => ({
-//   style: {
-//     backgroundImage: `url('${props.src}')`,
-//   },
-// }))`
-//   width: 100%;
-//   height: 180px;
-//   background-size: cover;
-//   background-position: center;
-//   background-repeat: no-repeat;
-// `;
 
 const StyledDiv = styled.div`
   width: 100%;
