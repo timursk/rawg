@@ -32,10 +32,10 @@ const StyledDiv = styled.div`
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 6px solid #000;
+  border: 6px solid #fff;
   border-radius: 50%;
   animation: ${rotate} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #000 transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
   }
 
   &:nth-child(1) {
