@@ -2,13 +2,21 @@ import styled from 'styled-components';
 import { MainInfo } from './MainInfo';
 import Link from 'next/link';
 import Image from 'next/image';
+import blurImage from '../../assets/placeholder-image.png';
 
 export const Card = ({ game: { name, background_image, rating, released, metacritic, slug } }) => {
   return (
     <Link href={`/games/${slug}`}>
       <Container>
         {background_image && (
-          <StyledImage src={background_image} alt={name} width={500} height={250} />
+          <StyledImage
+            src={background_image}
+            alt={name}
+            width={500}
+            height={250}
+            placeholder="blur"
+            blurDataURL={blurImage.src}
+          />
         )}
 
         <StyledDiv>
