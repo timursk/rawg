@@ -6,15 +6,15 @@ import paginationImg from '../../assets/pagination.png';
 export function AutoScroll({ setIsAutoScroll }) {
   const [value, setValue] = useState(true);
 
-  const handleClick = () => {
-    setValue(!value);
-    setIsAutoScroll(!value);
+  const handleClick = (isAuto) => {
+    setValue(isAuto);
+    setIsAutoScroll(isAuto);
   };
 
   return (
     <Container>
-      <StyledButton disabled={value} img={autoscrollImg.src} onClick={handleClick}></StyledButton>
-      <StyledButton disabled={!value} img={paginationImg.src} onClick={handleClick}></StyledButton>
+      <StyledButton disabled={value} img={autoscrollImg.src} onClick={() => handleClick(true)} />
+      <StyledButton disabled={!value} img={paginationImg.src} onClick={() => handleClick(false)} />
     </Container>
   );
 }
