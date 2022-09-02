@@ -18,8 +18,17 @@ const GlobalStyle = createGlobalStyle`
 
 const theme = {
   colors: {
-    primary: '#0070f3',
-    textColor: '#000',
+    primary: '#151515',
+    secondary: '#202020',
+    active: '#2d2d2d',
+    inversePrimary: '#fff',
+
+    textColor: '#fff',
+    inverseTextColor: '#000',
+  },
+  border: {
+    radius: '8px',
+    minRadius: '4px',
   },
 };
 
