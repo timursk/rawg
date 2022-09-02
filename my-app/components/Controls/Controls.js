@@ -25,7 +25,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   gap: 10px;
 
-  @media (max-width: 450px) {
+  @media (max-width: 500px) {
     justify-content: flex-end;
   }
 `;
