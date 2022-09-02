@@ -1,35 +1,18 @@
-import { useRef, useState } from 'react';
 import { platforms } from '../../utils/constants';
 import { DropDown } from './DropDown';
 
 const getPlatform = (value) => {
-  return platforms.find((platform) => platform.dataValue === value)?.title;
+  return platforms.findIndex((platform) => platform.dataValue === value);
 };
 
 export function Filter({ filters, setFilters }) {
-  const [value, setValue] = useState(getPlatform(filters.platforms));
-  const [isOpen, setIsOpen] = useState(false);
-  const dropDownRef = useRef(null);
+  const initialValueIndex = getPlatform(filters.platforms);
 
-  const handleClick = (e) => {
-    const targetValue = e.target.dataset.value;
-    if (!e.target.textContent) {
-      return;
-    }
-
-    setValue(e.target.textContent);
-    setFilters((prev) => ({ ...prev, platforms: targetValue }));
-    setIsOpen(false);
+  const handleChange = (value) => {
+    setFilters((prev) => ({ ...prev, platforms: value.dataValue }));
   };
 
   return (
-    <DropDown
-      isOpen={isOpen}
-      dropDownRef={dropDownRef}
-      value={value}
-      list={platforms}
-      setIsOpen={setIsOpen}
-      handleClick={handleClick}
-    />
+    <DropDown list={platforms} initialValueIndex={initialValueIndex} handleChange={handleChange} />
   );
 }
